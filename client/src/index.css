@@ -139,6 +139,20 @@ input, select, textarea {
   flex: 1;
 }
 
+@keyframes fade-up {
+  0% {
+    opacity: 0;
+    transform: translate(-50% ,-40%);
+  }
+  50% {
+    opacity: 1;
+  }
+  100%{
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
 /* /////////////////////////////////////////// Header /////////////////////////////////////////// */
 
 
@@ -196,6 +210,70 @@ footer {
   padding: 1rem;
   color: #fff;
   font-weight: 300;
+}
+
+/* /////////////////////////////////////////// Home /////////////////////////////////////////// */
+
+.home-welcome {
+  position: relative;
+  width: 100%;
+  height: calc(100vh - 4rem);
+  /* background-color: #6f6af8; */
+  background-image: linear-gradient(to bottom, #252542, #6f6af8, #6f6af8);
+
+  margin-top: 4rem;
+}
+
+.home-welcome-img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transform-origin: center;
+
+  width: 80%;
+  animation: .5s fade-up ease-in;
+}
+
+.home-create-blog {
+  width: 80%;
+  height: calc(100vh - 6rem);
+  margin: auto;
+  padding-top: 3rem;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 5rem;
+}
+
+.home-create-blog h2 {
+  font-size: 64px;
+  margin-bottom: 3rem;
+}
+
+.home-create-blog p {
+  font-weight: bold;
+}
+
+.home-create-blog > div:first-child {
+  width: calc(2 *100% / 5);
+}
+
+.home-create-blog > div:nth-child(2) {
+  width: calc(3 * 100% / 5);
+  line-height: 4;
+}
+
+.fade-up {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all .5s ease-in;
+}
+
+.fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* /////////////////////////////////////////// Posts /////////////////////////////////////////// */
@@ -460,10 +538,16 @@ footer {
     min-height: 100vh;
   }
 
+  .header-style img {
+    height: 35px;
+    aspect-ratio: 1/1 !important;
+  }
+
   footer {
     background-color: #0c0c22;
     padding: 1rem;
     text-align: center;
+    margin-top: 3rem;
   }
   
   .footer-categories {
@@ -492,6 +576,26 @@ footer {
     font-size: 0.8rem;
   }
 
+  .home-create-blog {
+    flex-direction: column;
+    height: fit-content;
+    width: 100%;
+    gap: 0;
+    justify-content: flex-start;
+  }
+
+  .home-create-blog h2 {
+    font-size: 52px;
+  }
+
+  .home-create-blog > div:nth-child(2) {
+    line-height: 3;
+  }
+
+  .home-create-blog div{
+    width: 80% !important;
+  }
+  
   .register, .login, .create-post {
     width: 100%;
   }

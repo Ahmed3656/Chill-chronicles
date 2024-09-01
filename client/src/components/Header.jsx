@@ -23,6 +23,7 @@ const Header = () => {
           <Nav className='me-5'>
             <Link to="/profile/id" className="nav-link">Name Name</Link>
             <Link to="/create" className="nav-link">Create Post</Link>
+            <Link to="/blogs" className="nav-link">Blogs</Link>
             <Link to="/authors" className="nav-link">Authors</Link>
             <Link to="/logout" className="nav-link">Logout</Link>
           </Nav>
