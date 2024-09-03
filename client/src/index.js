@@ -21,10 +21,13 @@ import DeletePost from './pages/DeletePost';
 import CategoryPosts from './pages/CategoryPosts';
 import ErrorPage from './pages/ErrorPage';
 
+// User provider context to pass the loggedin user through the pages
+import UserProvider from './context/userContext';
+
 const router = createBrowserRouter([
   {
     path : "/",
-    element : <Layout />,
+    element : <UserProvider><Layout /></UserProvider>,
     errorElement : <ErrorPage />,
     children : [
       { index : true, element : <Home /> },

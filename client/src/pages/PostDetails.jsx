@@ -1,40 +1,110 @@
-import React from 'react'
-import PostAuthor from '../components/PostAuthor'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState, useContext } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import axios from 'axios';
 
-import img from '../images/blog15.jpg'
+import { UserContext } from '../context/userContext';
+import LoadingPage from '../components/LoadingPage';
+import DeletePost from './DeletePost';
+import { IoIosArrowDropupCircle } from "react-icons/io";
+
+import ReactTimeAgo from 'react-time-ago';
+import TimeAgo from 'javascript-time-ago';
+import en from 'javascript-time-ago/locale/en.json';
+import ru from 'javascript-time-ago/locale/ru.json';
+
+TimeAgo.addDefaultLocale(en);
+TimeAgo.addLocale(ru);
 
 const PostDetails = () => {
+  const [post, setPost] = useState(null);
+  const [author, setAuthor] = useState({});
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showTopButton, setShowTopButton] = useState(false);
+  const { id } = useParams();
+  const {currUser} = useContext(UserContext);
+
+  useEffect(() => {
+    const fetchPost = async () => {
+      setIsLoading(true);
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/posts/${id}`);
+        setPost(response?.data);
+
+        const authorResponse = await axios.get(`${process.env.REACT_APP_BASE_URL}/users/${response?.data?.creator}`);
+        setAuthor(authorResponse?.data);
+      }
+      catch (err) {
+        setError(err);
+      }
+      setIsLoading(false);
+    }
+
+    fetchPost();
+  }, [id]);
+
+  const capitalize = (fullName) => {
+    if (typeof fullName !== 'string') return '';
+  
+    const nameParts = fullName.trim().split(' ');
+  
+    if (nameParts.length === 1) {
+      return nameParts[0].charAt(0).toUpperCase() + nameParts[0].slice(1).toLowerCase();
+    }
+  
+    const firstName = nameParts[0].charAt(0).toUpperCase() + nameParts[0].slice(1).toLowerCase();
+    const lastName = nameParts[nameParts.length - 1].charAt(0).toUpperCase() + nameParts[nameParts.length - 1].slice(1).toLowerCase();
+  
+    return `${firstName} ${lastName}`.trim();
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", () => {
+      setShowTopButton(window.scrollY > 200? true : false);
+    })
+  })
+
+  const moveToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  }
+
   return (
     <section className="post-details">
-      <div className="container post-details-container">
-        <div className="post-details-header">
-          <PostAuthor />
-          <div className="post-details-buttons">
-            <Link to={`/posts/id/edit`} className='meBtn meBtn-sm meBtn-primary'>Edit</Link>
-            <Link to={`/posts/id/delete`} className='meBtn meBtn-sm meBtn-danger'>Delete</Link>
+      {error && <p className='error'>{error}</p>}
+      {isLoading?
+        <LoadingPage />
+      :
+        (post && <div className="container post-details-container">
+          <div className="post-details-header">
+            
+            <Link to={`/posts/users/${post.creator}`} className='post-author'>
+              <div className="author-avatar">
+                <img src={`${process.env.REACT_APP_ASSETS_URL}/uploads/${author?.avatar || 'nullPic.png'}`} alt={author?.name} />
+              </div>
+              <div className="author-details">
+                <h6>By: {capitalize(author?.name)}</h6>
+                <small><ReactTimeAgo date={new Date(post.createdAt)} locale='en-US' /></small>
+              </div>
+            </Link>
+
+            {currUser?.id == post.creator && <div className="post-details-buttons">
+              <Link to={`/posts/${id}/edit`} className='meBtn meBtn-sm meBtn-primary'>Edit</Link>
+              <DeletePost postId={id} />
+            </div>
+            }
           </div>
+          <h1>{post.title}</h1>
+          <div className="post-details-thumbnail">
+            <img src={`${process.env.REACT_APP_ASSETS_URL}/uploads/${post.thumbnail}`} alt='' />
+          </div>
+          <p dangerouslySetInnerHTML={{__html: post.description}}></p>
         </div>
-        <h1>The post title</h1>
-        <div className="post-details-thumbnail">
-          <img src={img} alt='' />
-        </div>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis tenetur officia impedit ipsa. Doloremque dicta at praesentium minima illo animi tempore sed quam odit adipisci. Nobis aspernatur exercitationem soluta nulla dicta animi nihil quidem, dolorem, unde quisquam doloribus placeat ducimus!
-        </p>
-        <p>
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Id, illo? Aut maiores animi provident sit minus vero mollitia maxime sint! Fuga eius fugiat quae, facilis deserunt dignissimos dolores nulla ipsum tenetur distinctio sit repudiandae corporis quia officia. Non labore quod recusandae similique magnam explicabo, voluptatum ducimus eos blanditiis repellat quis rerum quos consequatur ab ipsum?
-        </p>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati, harum assumenda magnam et, dolor repellat voluptate possimus cumque culpa voluptatibus aperiam delectus iusto accusamus consequatur corrupti illum quos unde ipsum totam voluptates qui ut, iure cum. Nisi dignissimos nobis eum! Officia mollitia dolorum at eaque incidunt, nulla maiores, hic magni sint ipsa quibusdam repellendus cumque, enim eos dolorem. Ipsam corporis libero voluptas deserunt aliquid natus corrupti, cum suscipit facilis iste sequi aliquam pariatur officiis velit illum et architecto placeat. Ad, provident aliquam voluptas tempora nulla voluptates nam vero eum omnis atque! Quaerat amet rem consequatur, magni assumenda quod vero sit perferendis dignissimos atque dolorum similique beatae iure corrupti. Expedita, in deserunt.
-        </p>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore numquam enim tempora pariatur ea consequatur eius facilis reiciendis tenetur mollitia!
-        </p>
-        <p>
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Recusandae ab assumenda corrupti nulla odio aperiam facere deserunt, modi omnis debitis illo, quas beatae, quod quos ratione. Earum harum eaque corrupti ratione temporibus ab architecto aut itaque esse sunt voluptas soluta, in, accusantium, totam voluptate. Sunt animi ad quas maiores, itaque eos minima molestias blanditiis a, quis minus cumque culpa aut illo veniam hic totam reiciendis aperiam quae dicta id omnis excepturi. Ducimus doloremque ea quis officiis? Sunt eaque consequatur deserunt explicabo, vero quasi nemo quisquam omnis cum cumque aperiam laborum atque non velit dicta pariatur repellat. Sit, perferendis consectetur unde dignissimos nobis blanditiis, dolorum recusandae at dolor pariatur vitae nostrum? Dolorem accusamus unde quod eaque praesentium dolore eum eligendi natus necessitatibus minus eveniet accusantium, quibusdam, neque nulla officiis officia error cupiditate obcaecati inventore asperiores ab. Praesentium ipsum architecto officiis provident alias quod fugit magnam nemo. Deserunt, possimus ab adipisci excepturi voluptatem earum inventore. Non, obcaecati dolore iste aperiam voluptatum odit, excepturi tempore, et veritatis ipsa deserunt? Minima itaque consectetur expedita quis, rerum fuga temporibus. Omnis magnam harum eaque. Ducimus, non. Harum dolores vel quas, repellendus earum veniam porro laudantium ratione iure, cupiditate recusandae, officia saepe itaque animi accusamus voluptates cum.
-        </p>
-      </div>
+        )
+      }
+      {showTopButton && <span className="to-top" onClick={moveToTop} style={{transition : 'all .5s linear'}}><IoIosArrowDropupCircle /></span>}
     </section>
   )
 }

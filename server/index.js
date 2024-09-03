@@ -30,6 +30,11 @@ app.use('/api/posts', postRoutes);
 app.use(notFound);
 app.use(errorMiddleware);
 
-connect(process.env.MONGO_URI)
-    .then(app.listen(port, () => console.log(`Server running on port ${port}`)))
-    .catch(error => console.log(error));
+connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  socketTimeoutMS: 45000,
+  connectTimeoutMS: 30000,
+})
+  .then(app.listen(port, () => console.log(`Server running on port ${port}`)))
+  .catch(error => console.log(error));

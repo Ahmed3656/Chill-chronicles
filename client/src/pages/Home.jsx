@@ -1,9 +1,17 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 
 import { Link } from 'react-router-dom';
+import { UserContext } from '../context/userContext';
 import homeImage from '../images/home-main.png';
 
 const Home = () => {
+  const { currUser } = useContext(UserContext);
+  const [path, setPath] = useState('');
+
+  useEffect(() => {
+    const tmpPath = (currUser? '/create' : '/register');
+    setPath(tmpPath);
+  }, [])
 
   useEffect(() => {
     const fadeUpElements = document.querySelectorAll(".fade-up");
@@ -30,8 +38,8 @@ const Home = () => {
         <div className="home-welcome-img">
           <img src={homeImage} alt="" />
           <div className="welcome-image-btns text-center pt-5">
-            <Link to="/register" className='meBtn mx-2'>Get Started</Link>
-            <Link to="/blogs" className='meBtn mx-2'>Explore</Link>
+            <Link to={path} className='meBtn mx-2'>{currUser? 'Create a Blog' : 'Get Started'}</Link>
+            <Link to="/blogs" className='meBtn mx-2'>{currUser? 'View Blogs' : 'Explore'}</Link>
           </div>
         </div>
       </div>
@@ -39,7 +47,7 @@ const Home = () => {
         <div>
           <h2>How to create a blog for free</h2>
           <p>Follow these 4 steps to start blogging today.</p>
-          { window.innerWidth > 800 ? <Link to="/register" className='meBtn meBtn-primary'>Start Blogging</Link> : null }
+          { window.innerWidth > 800 ? <Link to={path} className='meBtn meBtn-primary'>Start Blogging</Link> : null }
         </div>
         <div>
           <ol>
@@ -49,7 +57,7 @@ const Home = () => {
             <li><strong>Share your blog.</strong> Gain new readers and promote your blog on social media.</li>
           </ol>
         </div>
-        { window.innerWidth < 800 ? <Link to="/register" className='meBtn meBtn-primary mb-5'>Start Blogging</Link> : null }
+        { window.innerWidth < 800 ? <Link to={path} className='meBtn meBtn-primary mb-5'>Start Blogging</Link> : null }
         </div>
     </main>
   )
