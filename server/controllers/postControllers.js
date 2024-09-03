@@ -13,7 +13,7 @@ const createPost = async (req, res, next) => {
         let {title, category, description} = req.body;
         const {thumbnail} = req.files;
         if(!title || !category || !description || !thumbnail) return next(new HttpError('Fill in all fields and choose a thumbnail', 422));
-        if(thumbnail.size > 2000000) return next(new HttpError('Thumbnail is too big. File should be less than 2mb.', 422));
+        if(thumbnail.size > 2000000) return next(new HttpError('Thumbnail is too big. File should be less than 2mb', 422));
 
         let fileName = thumbnail.name;
         let splittedFilename = fileName.split('.');
@@ -23,7 +23,7 @@ const createPost = async (req, res, next) => {
             if(err) return next(new HttpError(err));
             
             const newPost = await Post.create({title, category, description, thumbnail: newFilename, creator: req.user.id});
-            if(!newPost) return next(new HttpError("Post couldn't be created.", 422));
+            if(!newPost) return next(new HttpError("Post couldn't be created", 422));
 
             const currUser = await User.findById(req.user.id);
             const newCnt = currUser.posts + 1;
@@ -58,7 +58,7 @@ const getPost = async (req, res, next) => {
         const postId = req.params.id;
         const post = await Post.findById(postId);
 
-        if(!post) return next(new HttpError('Post not found.', 404));
+        if(!post) return next(new HttpError('Post not found', 404));
 
         res.status(200).json(post);
     }
@@ -105,16 +105,16 @@ const editPost = async (req, res, next) => {
         let fileName, newFilename, updatedPost;
         const postId = req.params.id;
         const {title, category, description} = req.body;
-        const {thumbnail} = req.files;
+        const thumbnail = req.files?.thumbnail;
 
         if(!title || !category || description.length < 12 /*ReactQuill has 11 characters by default(opening and closing tags with a break)*/)
-            return next(new HttpError('Fill in all fields.', 422));
-
-        if(req.user.id != oldPost.creator) return next(new HttpError("Post couldn't be edited.", 403));
+            return next(new HttpError('Fill in all fields', 422));
 
         if(!thumbnail) updatedPost = await Post.findByIdAndUpdate(postId, {title, category, description}, {new: true});
         else {
             const oldPost = await Post.findById(postId);
+            if(req.user.id != oldPost.creator) return next(new HttpError("Post couldn't be edited", 403));
+            
             fs.unlink(path.join(__dirname, '..', 'uploads', oldPost.thumbnail), async (err) => {
                 if(err) return next(new HttpError(err, 500));
             });
@@ -129,10 +129,10 @@ const editPost = async (req, res, next) => {
             });
 
             updatedPost = await Post.findByIdAndUpdate(postId, {title, category, description, thumbnail: newFilename}, {new: true});
-            if(!updatedPost) return next(new HttpError("Couldn't update the post.", 400));
-
-            res.status(200).json(updatedPost);
         }
+        if(!updatedPost) return next(new HttpError("Couldn't update the post", 400));
+
+        res.status(200).json(updatedPost);
     }
     catch (error) {
         return next(new HttpError(error, 500));
@@ -150,7 +150,7 @@ const deletePost = async (req, res, next) => {
         const post = await Post.findById(postId);
         const fileName = post.thumbnail;
 
-        if(req.user.id != post.creator) return next(new HttpError("Post couldn't be deleted.", 403));
+        if(req.user.id != post.creator) return next(new HttpError("Post couldn't be deleted", 403));
 
         fs.unlink(path.join(__dirname, '..', 'uploads', fileName), async (err) => {
             if(err) return next(new HttpError(err, 500));

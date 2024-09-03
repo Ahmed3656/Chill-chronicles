@@ -139,17 +139,32 @@ input, select, textarea {
   flex: 1;
 }
 
+.loading-page {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  display: grid;
+  place-items: center;
+}
+
+.custom-pagination .page-item.active .page-link {
+  background-color: #0c0c22;
+  border: none;
+}
+
 @keyframes fade-up {
   0% {
     opacity: 0;
-    transform: translate(-50% ,-40%);
+    transform: translateY(2rem);
   }
   50% {
     opacity: 1;
   }
   100%{
     opacity: 1;
-    transform: translate(-50%, -50%);
+    transform: translateY(0);
   }
 }
 
@@ -161,6 +176,7 @@ input, select, textarea {
   background: var(225, 225, 225, 0.5) !important;
   /* border-bottom: 4px solid #f2f2ff !important; */
   backdrop-filter: blur(20px) !important;
+  transition: all 0.3s ease-in-out;
 }
 
 .header-style img {
@@ -170,6 +186,7 @@ input, select, textarea {
 .navbar-toggler:focus, .navbar-toggler:active {
   box-shadow: none !important;
 }
+
 .navbar-toggler:hover {
   background-color: #efefef;
 }
@@ -215,7 +232,10 @@ footer {
 /* /////////////////////////////////////////// Home /////////////////////////////////////////// */
 
 .home-welcome {
-  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   width: 100%;
   height: calc(100vh - 4rem);
   /* background-color: #6f6af8; */
@@ -225,12 +245,6 @@ footer {
 }
 
 .home-welcome-img {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  transform-origin: center;
-
   width: 80%;
   animation: .5s fade-up ease-in;
 }
@@ -250,6 +264,7 @@ footer {
 .home-create-blog h2 {
   font-size: 64px;
   margin-bottom: 3rem;
+  line-height: 1.5;
 }
 
 .home-create-blog p {
@@ -290,6 +305,11 @@ footer {
   margin: 1rem 0 0.6rem;
 }
 
+.post-card .card-img {
+  height: 12rem;
+  width: 100%;
+}
+
 .post-author {
   display: flex;
   gap: 1rem;
@@ -322,6 +342,8 @@ footer {
   background-color: #fff;
   margin-inline: auto;
   padding: 2rem 0;
+
+  transition: all .5s linear;
 }
 
 .post-details-header {
@@ -346,6 +368,27 @@ footer {
 
 .post-details p {
   margin-bottom: 0.7rem;
+}
+
+.to-top {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+
+  display: flex;
+  height: 4rem;
+  aspect-ratio: 1/1;
+
+  background-color: #f2f2ff;
+  color: #6f6af8;
+  border-radius: 50%;
+
+  font-size: 4rem;
+  cursor: pointer;
+}
+
+.to-top i {
+  display: block;
 }
 
 /* /////////////////////////////////////////// Register /////////////////////////////////////////// */
@@ -410,12 +453,12 @@ footer {
 }
 
 .avatar-wrapper img {
-  border-radius: 50%;
+  border-radius: 20%;
 }
 
 .profile-avatar {
   height: 100%;
-  border-radius: 50%;
+  border-radius: 25%;
   border: 1rem solid #fff;
 }
 
@@ -430,8 +473,8 @@ footer {
 .avatar-form label, .profile-avatar-btn {
   position: absolute;
 
-  right: 2rem;
-  bottom: 1.4rem;
+  right: 0.8rem;
+  bottom: 2rem;
 
   width: 3rem;
   height: 3rem;
@@ -444,6 +487,7 @@ footer {
   font-size: 1.3rem;
 
   border-radius: 50%;
+  cursor: pointer;
 }
 
 .profile-avatar-btn {
@@ -493,7 +537,7 @@ footer {
 
 .dashboard-post-thumbnail {
   width: 4rem;
-  border-radius: 0.3rem;
+  border-radius: 0.6rem;
   overflow: hidden;
 }
 
@@ -507,6 +551,10 @@ footer {
   display: flex;
   gap: 0.5rem;
   white-space: nowrap;
+}
+
+.dashboard-post-btns a:nth-child(1) {
+  border: 1px solid #c0c0c0;
 }
 
 /* /////////////////////////////////////////// Create post /////////////////////////////////////////// */
@@ -641,10 +689,6 @@ footer {
 
   .dashboard-post-btns {
     width: 100%;
-  }
-
-  .dashboard-post-btns > a {
-    border: 1px solid #6a6a6a;
   }
 
   .dashboard-post-btns .meBtn {
