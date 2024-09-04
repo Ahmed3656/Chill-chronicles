@@ -30,7 +30,7 @@ const Login = () => {
     setError('');
 
     try {
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/users/login`, userData);
+      const response = await axios.post(`${import.meta.env.REACT_APP_BASE_URL}/users/login`, userData);
       const user = await response.data;
       setCurrUser(user);
       navigate('/');

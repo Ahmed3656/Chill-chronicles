@@ -23,7 +23,7 @@ const Dashboard = () => {
     const fetchPosts = async () => {
       setIsLoading(true);
       try {
-        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/posts/authors/${id}`, {withCredentials: true, headers: {Authorization: `Bearer ${token}`}});
+        const response = await axios.get(`${import.meta.env.REACT_APP_BASE_URL}/posts/authors/${id}`, {withCredentials: true, headers: {Authorization: `Bearer ${token}`}});
         setPosts(response.data);
       }
       catch (err) {
@@ -46,7 +46,7 @@ const Dashboard = () => {
             <article key={post.id} className='dashboard-post'>
               <div className="dashboard-post-info">
                 <div className="dashboard-post-thumbnail">
-                  <img src={`${process.env.REACT_APP_ASSETS_URL}/uploads/${post.thumbnail}`} alt="" />
+                  <img src={`${import.meta.env.REACT_APP_ASSETS_URL}/uploads/${post.thumbnail}`} alt="" />
                 </div>
                 <h5 className='truncate-text'>{post.title}</h5>
               </div>

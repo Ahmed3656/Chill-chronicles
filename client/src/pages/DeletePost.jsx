@@ -11,7 +11,7 @@ const DeletePost = ({postId: id}) => {
 
   const deletePost = async (id) => {
     try {
-      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/posts/${id}`, {withCredentials: true, headers: {Authorization: `Bearer ${token}`}});
+      const response = await axios.delete(`${import.meta.env.REACT_APP_BASE_URL}/posts/${id}`, {withCredentials: true, headers: {Authorization: `Bearer ${token}`}});
       if(response.status == 200) {
         if(location.pathname == `/myposts/${currUser.id}`) navigate(0);
         else navigate('/blogs');
