@@ -18,7 +18,7 @@ app.use(express.json({extended: true}));
 app.use(express.urlencoded({extended: true}));
 
 // Link the server side with the client side safely
-app.use(cors({credentials: true, origin: "http://localhost:3000"}));
+app.use(cors({credentials: true, origin: "https://chill-chronicles.vercel.app"}));
 
 app.use(upload());
 app.use('/uploads', express.static(__dirname + '/uploads'));
