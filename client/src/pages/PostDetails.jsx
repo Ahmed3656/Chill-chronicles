@@ -28,10 +28,10 @@ const PostDetails = () => {
     const fetchPost = async () => {
       setIsLoading(true);
       try {
-        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/posts/${id}`);
+        const response = await axios.get(`${import.meta.env.REACT_APP_BASE_URL}/posts/${id}`);
         setPost(response?.data);
 
-        const authorResponse = await axios.get(`${process.env.REACT_APP_BASE_URL}/users/${response?.data?.creator}`);
+        const authorResponse = await axios.get(`${import.meta.env.REACT_APP_BASE_URL}/users/${response?.data?.creator}`);
         setAuthor(authorResponse?.data);
       }
       catch (err) {
@@ -82,7 +82,7 @@ const PostDetails = () => {
             
             <Link to={`/posts/users/${post.creator}`} className='post-author'>
               <div className="author-avatar">
-                <img src={`${process.env.REACT_APP_ASSETS_URL}/uploads/${author?.avatar || 'nullPic.png'}`} alt={author?.name} />
+                <img src={`${import.meta.env.REACT_APP_ASSETS_URL}/uploads/${author?.avatar || 'nullPic.png'}`} alt={author?.name} />
               </div>
               <div className="author-details">
                 <h6>By: {capitalize(author?.name)}</h6>
@@ -98,7 +98,7 @@ const PostDetails = () => {
           </div>
           <h1>{post.title}</h1>
           <div className="post-details-thumbnail">
-            <img src={`${process.env.REACT_APP_ASSETS_URL}/uploads/${post.thumbnail}`} alt='' />
+            <img src={`${import.meta.env.REACT_APP_ASSETS_URL}/uploads/${post.thumbnail}`} alt='' />
           </div>
           <p dangerouslySetInnerHTML={{__html: post.description}}></p>
         </div>

@@ -16,7 +16,7 @@ const Authors = () => {
     const fetchAuthors = async () => {
       setIsLoading(true);
       try {
-        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/users`);
+        const response = await axios.get(`${import.meta.env.REACT_APP_BASE_URL}/users`);
         setAuthors(response?.data);
       }
       catch (err) {
@@ -117,7 +117,7 @@ const Authors = () => {
             currentAuthors.map((author) => {
               return<Link key={author._id} to={`/posts/users/${author._id}`}  className='authors my-3 col-sm-12 col-md-6 col-lg-3'>
                 <Card style={{ padding : '0.65rem', display : 'flex', flexDirection : 'row' }}>
-                  <Card.Img src={`${process.env.REACT_APP_ASSETS_URL}/uploads/${author.avatar? author.avatar : 'nullPic.png'}`} style={{width : '5.5rem', height : '100%', borderRadius : '4px'}} />
+                  <Card.Img src={`${import.meta.env.REACT_APP_ASSETS_URL}/uploads/${author.avatar? author.avatar : 'nullPic.png'}`} style={{width : '5.5rem', height : '100%', borderRadius : '4px'}} />
                   <Card.Body>
                     <Card.Title style={{whiteSpace: 'noWrap'}}>{capitalize(author.name)}</Card.Title>
                     <Card.Text><small>Number of posts:</small> {author.posts}</Card.Text>

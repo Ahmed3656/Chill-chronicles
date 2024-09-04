@@ -50,7 +50,7 @@ const CreatePost = () => {
       postData.set('description', description);
       postData.set('thumbnail', thumbnail);
 
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/posts/create-post`, postData, {withCredentials: true, headers: {Authorization: `Bearer ${token}`}});
+      const response = await axios.post(`${import.meta.env.REACT_APP_BASE_URL}/posts/create-post`, postData, {withCredentials: true, headers: {Authorization: `Bearer ${token}`}});
       
       setTitle('');
       setCategory('Uncategorized');

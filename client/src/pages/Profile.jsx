@@ -56,7 +56,7 @@ useEffect(() => {
   const fetchUser = async () => {
     setIsLoading(true);
     try {
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/users/${id}`, {withCredentials: true, headers: {Authorization: `Bearer ${token}`}});
+      const response = await axios.get(`${import.meta.env.REACT_APP_BASE_URL}/users/${id}`, {withCredentials: true, headers: {Authorization: `Bearer ${token}`}});
       const {name, email, avatar} = response.data;
       setName(name);
       setEmail(email);
@@ -77,7 +77,7 @@ useEffect(() => {
       const postData = new FormData();
       postData.set('pfp', avatar);
 
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/users/change-pfp`, postData, {withCredentials: true, headers: {Authorization: `Bearer ${token}`}});
+      const response = await axios.post(`${import.meta.env.REACT_APP_BASE_URL}/users/change-pfp`, postData, {withCredentials: true, headers: {Authorization: `Bearer ${token}`}});
       setAvatar(response?.data.avatar);
     }
     catch (err) {
@@ -96,7 +96,7 @@ useEffect(() => {
       userData.set('newPassword', newPassword);
       userData.set('confirmNewPassword', confirmNewPassword);
     
-      const response = await axios.patch(`${process.env.REACT_APP_BASE_URL}/users/edit-user`, userData, {withCredentials:true, headers: {Authorization: `Bearer ${token}`}});
+      const response = await axios.patch(`${import.meta.env.REACT_APP_BASE_URL}/users/edit-user`, userData, {withCredentials:true, headers: {Authorization: `Bearer ${token}`}});
       
       setCurrPassword('');
       setNewPassword('');
@@ -119,7 +119,7 @@ useEffect(() => {
           <div className="profile-details">
             <div className="avatar-wrapper">
               <div className="profile-avatar">
-                <img src={`${process.env.REACT_APP_ASSETS_URL}/uploads/${avatar ? avatar : 'nullPic.png'}`} alt="" />
+                <img src={`${import.meta.env.REACT_APP_ASSETS_URL}/uploads/${avatar ? avatar : 'nullPic.png'}`} alt="" />
               </div>
               <form className="form avatar-form">
                 <input type="file" name='avatar' id='avatar' onChange={event => setAvatar(event.target.files[0])} accept='png, jpg, jpeg'/>

@@ -25,14 +25,14 @@ const Posts = () => {
     const fetchPostsAndAuthors = async () => {
       setIsLoading(true);
       try {
-        const postResponse = await axios.get(`${process.env.REACT_APP_BASE_URL}/posts`);
+        const postResponse = await axios.get(`${import.meta.env.REACT_APP_BASE_URL}/posts`);
         const postsData = postResponse?.data;
         setPosts(postsData);
 
         const uniqueAuthorIds = [...new Set(postsData.map(post => post.creator))];
 
         // Fetch authors based on these IDs
-        const authorPromises = uniqueAuthorIds.map(id => axios.get(`${process.env.REACT_APP_BASE_URL}/users/${id}`));
+        const authorPromises = uniqueAuthorIds.map(id => axios.get(`${import.meta.env.REACT_APP_BASE_URL}/users/${id}`));
         const authorResponses = await Promise.all(authorPromises);
 
         const authorsData = {};
@@ -136,7 +136,7 @@ const Posts = () => {
         <>
           {currentPosts.map(({ _id: id, title, category, description, thumbnail, creator, createdAt }) => (
             <Card className='post-card col-lg-3 col-md-6 col-sm-12 mx-auto my-3' key={id} style={{ width: '21rem', padding: '0.65rem' }}>
-              <Card.Img src={`${process.env.REACT_APP_ASSETS_URL}/uploads/${thumbnail}`} />
+              <Card.Img src={`${import.meta.env.REACT_APP_ASSETS_URL}/uploads/${thumbnail}`} />
               <Card.Body>
                 <Link to={`/posts/${id}`}>
                   <Card.Title className='card-title'>
@@ -148,7 +148,7 @@ const Posts = () => {
 
                   <Link to={`/posts/users/${creator}`} className='post-author'>
                     <div className="author-avatar">
-                      <img src={`${process.env.REACT_APP_ASSETS_URL}/uploads/${authors[creator]?.avatar || 'nullPic.png'}`} alt={authors[creator]?.name} />
+                      <img src={`${import.meta.env.REACT_APP_ASSETS_URL}/uploads/${authors[creator]?.avatar || 'nullPic.png'}`} alt={authors[creator]?.name} />
                     </div>
                     <div className="author-details">
                       <h6>By: {capitalize(authors[creator]?.name)}</h6>

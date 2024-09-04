@@ -44,7 +44,7 @@ const EditPost = () => {
     setError('');
     const fetchPost = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/posts/${id}`);
+        const response = await axios.get(`${import.meta.env.REACT_APP_BASE_URL}/posts/${id}`);
         const post = response.data;
 
         setTitle(post.title);
@@ -71,7 +71,7 @@ const EditPost = () => {
       editedPost.set('description', description);
       if(thumbnail) editedPost.set('thumbnail', thumbnail);
       
-      const response = await axios.patch(`${process.env.REACT_APP_BASE_URL}/posts/${id}`, editedPost, {withCredentials: true, headers: {Authorization: `Bearer ${token}`}});
+      const response = await axios.patch(`${import.meta.env.REACT_APP_BASE_URL}/posts/${id}`, editedPost, {withCredentials: true, headers: {Authorization: `Bearer ${token}`}});
       
       setTitle('');
       setCategory('Uncategorized');
